@@ -5,8 +5,8 @@ Just a boilerplate for Go APIs that I'll use and improve over time.
 ## How to run
 
 ```bash
-go mod download
-go mod verify
+go mod tidy
+go get -u
 go run .
 ```
 
