@@ -1,0 +1,16 @@
+version: "0.1"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+      
+    # command: sleep infinity
+
+    # or
+
+    # command: ["tail", "-f", "/dev/null"] # Este comando substituirá o CMD no Dockerfile
+    # stdin_open: true # Mantenha o stdin aberto para o comando de espera
+    # tty: true # Aloque um pseudo-TTY para o comando de espera
