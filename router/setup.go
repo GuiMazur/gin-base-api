@@ -5,15 +5,15 @@ import (
 	"gin-base-api/services"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-var (
-	db = make(map[string]string)
-	appController = controllers.NewAppController(services.NewAppService(db))
-	authorizedController = controllers.NewAuthorizedController(db)
-)
+func SetupRouter(server *gin.Engine, db *gorm.DB) {
+	var (
+		appController = controllers.NewAppController(services.NewAppService(db))
+		authorizedController = controllers.NewAuthorizedController(db)
+	)
 
-func SetupRouter(server *gin.Engine) {
 	appController.Setup(server.Group("/"))
 
 	authorizedGroup := server.Group("/", gin.BasicAuth(gin.Accounts{

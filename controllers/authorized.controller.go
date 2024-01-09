@@ -4,13 +4,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type AuthorizedController struct {
-	db map[string]string
+	db *gorm.DB
 }
 
-func NewAuthorizedController(db map[string]string) ControllerInterface {
+func NewAuthorizedController(db *gorm.DB) ControllerInterface {
 	return &AuthorizedController{
 		db: db,
 	}

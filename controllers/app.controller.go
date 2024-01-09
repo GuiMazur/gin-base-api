@@ -1,6 +1,7 @@
 package controllers
 
 import (
+ 	"gin-base-api/controllers/dtos/app"
 	"gin-base-api/exception"
 	"gin-base-api/services"
 
@@ -28,8 +29,22 @@ func (this *AppController) Setup(router *gin.RouterGroup) {
 	})
 
 	router.GET("/user/:name", func(ctx *gin.Context) {
-		user := ctx.Params.ByName("name")
-		ret, err := this.AppService.GetUser(user)
+		name := ctx.Params.ByName("name")
+		ret, err := this.AppService.GetUser(name)
+		if err != nil {
+			exception.HandleException(ctx, err)
+			return
+		}
+		ctx.JSON(200, ret)
+	})
+
+	router.POST("/user", func(ctx *gin.Context) {
+		var createUserDto dtos.CreateUserDto;
+		if err := ctx.ShouldBindJSON(&createUserDto); err != nil {
+			exception.HandleException(ctx, exception.NewException(err.Error(), 400))
+			return
+		}
+		ret, err := this.AppService.CreateUser(&createUserDto)
 		if err != nil {
 			exception.HandleException(ctx, err)
 			return

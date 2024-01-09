@@ -1,27 +1,19 @@
 version: "0.1"
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8085:8085"
-  
   db:
     image: mysql:8
     restart: unless-stopped
     ports:
-      - '3306:3306'
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: rootpassword
+      TZ: "America/Sao_Paulo"
     volumes:
       - db-data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d
-      
 
 volumes:
   db-data:
-    

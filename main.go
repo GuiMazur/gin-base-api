@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-base-api/config"
+	"gin-base-api/db"
 	"gin-base-api/router"
 
 	"github.com/gin-gonic/gin"
@@ -14,11 +15,16 @@ func main() {
 
 	config := config.NewConfig()
 
+	db, err := db.SetupDB(config)
+	if err != nil {
+		panic(err)
+	}
+
 	server := gin.Default()
 
 	server.Use(Middleware1())
 	
-	router.SetupRouter(server)
+	router.SetupRouter(server, db)
 	
 	server.Run(config.App.Host + ":" + config.App.Port)
 }
