@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"gin-base-api/config"
-	"gin-base-api/db"
-	"gin-base-api/router"
+	"gin-base-api/pkg/config"
+	"gin-base-api/pkg/db"
+	"gin-base-api/pkg/router"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -13,25 +13,20 @@ import (
 func main() {
 	godotenv.Load(".env")
 
-	config := config.NewConfig()
+	if os.Getenv("GIN_MODE") == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
-	db, err := db.SetupDB(config)
+	config := config.New()
+
+	db, err := db.Setup(config)
 	if err != nil {
 		panic(err)
 	}
 
 	server := gin.Default()
 
-	server.Use(Middleware1())
-	
-	router.SetupRouter(server, db)
-	
-	server.Run(config.App.Host + ":" + config.App.Port)
-}
+	router.Setup(server, db)
 
-func Middleware1() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		ctx.Next()
-		fmt.Println("Middleware 1")
-	}
+	server.Run(config.App.Host + ":" + config.App.Port)
 }
