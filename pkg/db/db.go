@@ -10,8 +10,24 @@ import (
 	"gorm.io/gorm"
 )
 
-func Setup(config *config.Config) (*gorm.DB, error) {
+var dbInstance *gorm.DB
+
+func New() *gorm.DB {
+	if dbInstance == nil {
+		db, err := setup()
+		if err != nil {
+			panic(err)
+		}
+		dbInstance = db
+	}
+
+	return dbInstance
+}
+
+func setup() (*gorm.DB, error) {
 	const retryDelay = 3
+
+	config := config.New()
 
 	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", config.DB.User, config.DB.Password, config.DB.Host, config.DB.Port, config.DB.Name)
 
@@ -37,6 +53,5 @@ func Setup(config *config.Config) (*gorm.DB, error) {
 	}
 
 	db.AutoMigrate(models.ToMigrate()...)
-
 	return db, nil
 }

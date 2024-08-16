@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"gin-base-api/pkg/db"
 	"gin-base-api/pkg/models"
 	"gin-base-api/pkg/modules/token"
 	"gin-base-api/pkg/modules/user/dto"
@@ -19,11 +20,11 @@ type UserService struct {
 
 var userServiceInstance *UserService
 
-func NewService(db *gorm.DB, tokenService *token.TokenService) *UserService {
+func NewService() *UserService {
 	if userServiceInstance == nil {
 		userServiceInstance = &UserService{
-			db:           db,
-			tokenService: tokenService,
+			db:           db.New(),
+			tokenService: token.NewService(),
 		}
 	}
 	return userServiceInstance

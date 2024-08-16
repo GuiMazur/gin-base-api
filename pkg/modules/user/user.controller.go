@@ -5,6 +5,7 @@ import (
 	"gin-base-api/pkg/modules/token"
 	"gin-base-api/pkg/modules/user/dto"
 	"gin-base-api/pkg/utils/exception"
+	"gin-base-api/pkg/utils/interfaces"
 	"gin-base-api/pkg/utils/validation"
 	"strconv"
 
@@ -13,15 +14,15 @@ import (
 )
 
 type UserController struct {
-	*UserService
+	UserService *UserService
 }
 
 var userControllerInstance *UserController
 
-func NewController(userService *UserService) *UserController {
+func NewController() interfaces.ControllerInterface {
 	if userControllerInstance == nil {
 		userControllerInstance = &UserController{
-			UserService: userService,
+			UserService: NewService(),
 		}
 	}
 	return userControllerInstance

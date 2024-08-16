@@ -1,16 +1,14 @@
 package router
 
 import (
-	controllergroup "gin-base-api/pkg/controllers/controller-group"
+	"gin-base-api/pkg/modules/app"
+	"gin-base-api/pkg/modules/user"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func Setup(server *gin.Engine, db *gorm.DB) {
-	controllerGroup := controllergroup.New(db)
+func Setup(server *gin.Engine) {
+	app.NewController().Setup(server.Group("/"))
 
-	controllerGroup.AppController.Setup(server.Group("/"))
-
-	controllerGroup.UserController.Setup(server.Group("/user"))
+	user.NewController().Setup(server.Group("/user"))
 }

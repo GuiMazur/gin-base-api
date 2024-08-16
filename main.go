@@ -19,14 +19,11 @@ func main() {
 
 	config := config.New()
 
-	db, err := db.Setup(config)
-	if err != nil {
-		panic(err)
-	}
+	db.New()
 
 	server := gin.Default()
 
-	router.Setup(server, db)
+	router.Setup(server)
 
 	server.Run(config.App.Host + ":" + config.App.Port)
 }

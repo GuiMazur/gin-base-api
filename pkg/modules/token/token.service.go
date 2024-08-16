@@ -14,10 +14,10 @@ type TokenService struct {
 
 var tokenServiceInstance *TokenService
 
-func NewService(config *config.Config) *TokenService {
+func NewService() *TokenService {
 	if tokenServiceInstance == nil {
 		tokenServiceInstance = &TokenService{
-			config: config,
+			config: config.New(),
 		}
 	}
 	return tokenServiceInstance

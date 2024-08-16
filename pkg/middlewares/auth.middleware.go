@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"fmt"
-	"gin-base-api/pkg/config"
 	"gin-base-api/pkg/modules/token"
 	"gin-base-api/pkg/utils/exception"
 
@@ -10,7 +9,7 @@ import (
 )
 
 func Auth() gin.HandlerFunc {
-	tokenService := token.NewService(config.New())
+	tokenService := token.NewService()
 
 	return func(ctx *gin.Context) {
 		accessToken, err := ctx.Cookie("accessToken")

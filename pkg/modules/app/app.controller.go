@@ -2,20 +2,21 @@ package app
 
 import (
 	"gin-base-api/pkg/utils/exception"
+	"gin-base-api/pkg/utils/interfaces"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AppController struct {
-	*AppService
+	AppService *AppService
 }
 
 var appControllerInstance *AppController
 
-func NewController(appService *AppService) *AppController {
+func NewController() interfaces.ControllerInterface {
 	if appControllerInstance == nil {
 		appControllerInstance = &AppController{
-			AppService: appService,
+			AppService: NewService(),
 		}
 	}
 	return appControllerInstance
